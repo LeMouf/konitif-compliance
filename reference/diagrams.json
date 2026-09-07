@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0.0",
+  "package": "@konitif/compliance",
+  "diagrams": [
+    {
+      "id": "evidence-to-guidance",
+      "title": "De la preuve à la guidance",
+      "kind": "mechanism",
+      "summary": "Le verdict résulte de la comparaison entre un corpus de preuves identifié et une politique explicite.",
+      "nodes": [
+        {
+          "id": "subject",
+          "label": "Sujet évalué",
+          "description": "Version, environnement et périmètre sont identifiés."
+        },
+        {
+          "id": "collect",
+          "label": "Collecte",
+          "description": "Les collecteurs produisent des faits traçables.",
+          "tone": "observation"
+        },
+        {
+          "id": "policy",
+          "label": "Politique",
+          "description": "Critères et seuils sont appliqués aux preuves."
+        },
+        {
+          "id": "verdict",
+          "label": "Verdict",
+          "description": "Conforme, non conforme ou inconnu est qualifié.",
+          "tone": "observation"
+        },
+        {
+          "id": "guidance",
+          "label": "Guidance",
+          "description": "Une remédiation est dérivée sans réécrire le verdict.",
+          "tone": "projection"
+        }
+      ],
+      "edges": [
+        {
+          "from": "subject",
+          "to": "collect"
+        },
+        {
+          "from": "collect",
+          "to": "policy"
+        },
+        {
+          "from": "policy",
+          "to": "verdict"
+        },
+        {
+          "from": "verdict",
+          "to": "guidance"
+        }
+      ],
+      "caption": "L'absence de preuve ne devient jamais un succès implicite."
+    }
+  ]
+}

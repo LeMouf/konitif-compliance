@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "package": "@konitif/compliance",
+  "intent": "Évaluer une réalisation à partir de politiques et de preuves explicites.",
+  "clusters": [
+    {
+      "id": "evidence",
+      "title": "Preuves et snapshots",
+      "summary": "Capturer les faits sans les confondre avec un verdict.",
+      "authority": "Corpus de preuve collecté.",
+      "owns": [
+        "preuves",
+        "snapshots",
+        "collecte"
+      ],
+      "doesNotOwn": [
+        "politique"
+      ],
+      "workflow": [
+        "Collecter",
+        "Identifier",
+        "Préserver"
+      ],
+      "sources": [
+        "evidence.ts",
+        "snapshots.ts",
+        "collectorRunner.ts"
+      ]
+    },
+    {
+      "id": "policy",
+      "title": "Politiques et pureté",
+      "summary": "Exprimer les règles qui qualifient les preuves.",
+      "authority": "Décision de conformité versionnée.",
+      "owns": [
+        "règles",
+        "critères"
+      ],
+      "doesNotOwn": [
+        "faits observés"
+      ],
+      "workflow": [
+        "Déclarer",
+        "Évaluer",
+        "Qualifier"
+      ],
+      "sources": [
+        "policy.ts",
+        "purity.ts",
+        "schema.ts"
+      ]
+    },
+    {
+      "id": "guidance",
+      "title": "Restitution et guidance",
+      "summary": "Expliquer les résultats sans changer le verdict.",
+      "authority": "Projection explicative dérivée.",
+      "owns": [
+        "rendu",
+        "guidance"
+      ],
+      "doesNotOwn": [
+        "décision canonique"
+      ],
+      "workflow": [
+        "Lire",
+        "Expliquer",
+        "Orienter"
+      ],
+      "sources": [
+        "render.ts",
+        "guidance.ts"
+      ]
+    }
+  ]
+}
