@@ -3,6 +3,12 @@
   "license": "PolyForm-Noncommercial-1.0.0",
   "version": "0.284.1",
   "private": false,
+  "description": "Generic evidence, compliance reports and snapshot comparison for KONITIF-based systems.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeMouf/konitif-compliance.git"
+  },
+  "publishConfig": { "access": "public" },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
