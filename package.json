@@ -1,7 +1,7 @@
 {
   "name": "@konitif/compliance",
   "license": "PolyForm-Noncommercial-1.0.0",
-  "version": "0.284.2",
+  "version": "0.284.3",
   "private": false,
   "description": "Deterministic evidence, policy evaluation, compliance reports and snapshot comparison.",
   "repository": {

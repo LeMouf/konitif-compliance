@@ -6,14 +6,14 @@ const read = p => readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const policy=JSON.parse(read('release-policy.json'));
 const manifest=JSON.parse(read('package.json'));
 const lock=JSON.parse(read('package-lock.json'));
-const env={GITHUB_REPOSITORY:'LeMouf/konitif-compliance',GITHUB_EVENT_NAME:'push',GITHUB_REF:'refs/tags/v0.284.2'};
+const env={GITHUB_REPOSITORY:'LeMouf/konitif-compliance',GITHUB_EVENT_NAME:'push',GITHUB_REF:'refs/tags/v0.284.3'};
 test('release guard accepts only the intended package, source repository and version tag', () => {
   assertReleaseInputs(policy,manifest,lock,env);
   assertReleaseInputs(policy,manifest,lock,{
     ...env,
     GITHUB_EVENT_NAME:'workflow_dispatch',
     GITHUB_REF:'refs/heads/main',
-    COMPLIANCE_RELEASE_TAG:'v0.284.2'
+    COMPLIANCE_RELEASE_TAG:'v0.284.3'
   });
   for(const changed of [{GITHUB_REPOSITORY:'other/repo'},{GITHUB_EVENT_NAME:'pull_request'},{GITHUB_REF:'refs/heads/main'},{GITHUB_REF:'refs/tags/v0.284.1'}]) {
     assert.throws(()=>assertReleaseInputs(policy,manifest,lock,{...env,...changed}));
