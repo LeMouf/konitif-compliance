@@ -4,36 +4,36 @@
   "diagrams": [
     {
       "id": "evidence-to-guidance",
-      "title": "De la preuve à la guidance",
+      "title": "From evidence to guidance",
       "kind": "mechanism",
-      "summary": "Le verdict résulte de la comparaison entre un corpus de preuves identifié et une politique explicite.",
+      "summary": "A verdict results from comparing an identified evidence corpus with an explicit policy.",
       "nodes": [
         {
           "id": "subject",
-          "label": "Sujet évalué",
-          "description": "Version, environnement et périmètre sont identifiés."
+          "label": "Assessed subject",
+          "description": "Version, environment and scope are identified."
         },
         {
           "id": "collect",
-          "label": "Collecte",
-          "description": "Les collecteurs produisent des faits traçables.",
+          "label": "Collection",
+          "description": "Collectors produce traceable facts.",
           "tone": "observation"
         },
         {
           "id": "policy",
-          "label": "Politique",
-          "description": "Critères et seuils sont appliqués aux preuves."
+          "label": "Policy",
+          "description": "Criteria and thresholds are applied to the evidence."
         },
         {
           "id": "verdict",
           "label": "Verdict",
-          "description": "Conforme, non conforme ou inconnu est qualifié.",
+          "description": "Compliant, non-compliant or unknown is qualified.",
           "tone": "observation"
         },
         {
           "id": "guidance",
           "label": "Guidance",
-          "description": "Une remédiation est dérivée sans réécrire le verdict.",
+          "description": "Remediation is derived without rewriting the verdict.",
           "tone": "projection"
         }
       ],
@@ -55,7 +55,7 @@
           "to": "guidance"
         }
       ],
-      "caption": "L'absence de preuve ne devient jamais un succès implicite."
+      "caption": "Missing evidence never becomes implicit success."
     }
   ]
 }

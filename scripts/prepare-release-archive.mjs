@@ -4,7 +4,10 @@ import { constants, copyFileSync, mkdirSync, readFileSync, readdirSync, realpath
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-const root = fileURLToPath(new URL('..', import.meta.url));
+const authorityRoot = fileURLToPath(new URL('..', import.meta.url));
+const root = realpathSync(process.env.COMPLIANCE_RELEASE_ROOT
+  ? join(authorityRoot, process.env.COMPLIANCE_RELEASE_ROOT)
+  : authorityRoot);
 // Each package retains its own semantic archive-consumer verifier.
 const output = execFileSync(process.execPath, ['scripts/verify-package.mjs'], { cwd: root, encoding: 'utf8' });
 process.stdout.write(output);
@@ -17,6 +20,6 @@ const archive = join(directory, archives[0]);
 const bytes = readFileSync(archive);
 assert.equal('sha512-' + createHash('sha512').update(bytes).digest('base64'), evidence.integrity);
 assert.equal(bytes.length, evidence.bytes);
-mkdirSync(join(root, '.release'), { recursive: true });
-copyFileSync(archive, join(root, '.release/package.tgz'), constants.COPYFILE_EXCL);
+mkdirSync(join(authorityRoot, '.release'), { recursive: true });
+copyFileSync(archive, join(authorityRoot, '.release/package.tgz'), constants.COPYFILE_EXCL);
 console.log('Verified archive retained at .release/package.tgz');

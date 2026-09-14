@@ -30,7 +30,9 @@ export function createComplianceSnapshotManifest(
     platform: input.platform,
     profiles: [...input.profiles].sort(),
     commands: [...input.commands],
-    collectorVersions: Object.fromEntries(input.report.sources.map((source) => [source.id, input.report.ruleSetVersion])),
+    collectorVersions: Object.fromEntries(
+      input.report.sources.map((source) => [source.id, source.version ?? 'unknown'])
+    ),
     rawEvidencePaths: [...input.rawEvidencePaths].sort(),
     previousSnapshot: input.previousSnapshot ?? null
   };
@@ -40,7 +42,9 @@ export function compareComplianceReports(
   before: ComplianceReport,
   after: ComplianceReport
 ): ComplianceComparisonReport {
-  const compatible = before.schemaVersion === after.schemaVersion;
+  const compatible = before.schemaVersion === after.schemaVersion
+    && before.ruleSetVersion === after.ruleSetVersion
+    && before.product.productId === after.product.productId;
   const beforeById = new Map(before.evidence.map((evidence) => [evidence.id, evidence]));
   const afterById = new Map(after.evidence.map((evidence) => [evidence.id, evidence]));
   const ids = [...new Set([...beforeById.keys(), ...afterById.keys()])].sort();

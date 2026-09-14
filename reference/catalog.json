@@ -1,25 +1,25 @@
 {
   "schemaVersion": "1.0.0",
   "package": "@konitif/compliance",
-  "intent": "Évaluer une réalisation à partir de politiques et de preuves explicites.",
+  "intent": "Assess an identified subject from explicit evidence and versioned policies.",
   "clusters": [
     {
       "id": "evidence",
-      "title": "Preuves et snapshots",
-      "summary": "Capturer les faits sans les confondre avec un verdict.",
-      "authority": "Corpus de preuve collecté.",
+      "title": "Evidence and snapshots",
+      "summary": "Capture facts without conflating them with a verdict.",
+      "authority": "Collected evidence corpus.",
       "owns": [
-        "preuves",
+        "evidence",
         "snapshots",
-        "collecte"
+        "collection records"
       ],
       "doesNotOwn": [
-        "politique"
+        "policy"
       ],
       "workflow": [
-        "Collecter",
-        "Identifier",
-        "Préserver"
+        "Collect",
+        "Identify",
+        "Preserve"
       ],
       "sources": [
         "evidence.ts",
@@ -29,20 +29,20 @@
     },
     {
       "id": "policy",
-      "title": "Politiques et pureté",
-      "summary": "Exprimer les règles qui qualifient les preuves.",
-      "authority": "Décision de conformité versionnée.",
+      "title": "Policy and purity",
+      "summary": "Express the rules that qualify evidence.",
+      "authority": "Deterministic evaluation of a caller-provided versioned policy.",
       "owns": [
-        "règles",
-        "critères"
+        "rules",
+        "criteria"
       ],
       "doesNotOwn": [
-        "faits observés"
+        "observed facts"
       ],
       "workflow": [
-        "Déclarer",
-        "Évaluer",
-        "Qualifier"
+        "Declare",
+        "Evaluate",
+        "Qualify"
       ],
       "sources": [
         "policy.ts",
@@ -52,20 +52,20 @@
     },
     {
       "id": "guidance",
-      "title": "Restitution et guidance",
-      "summary": "Expliquer les résultats sans changer le verdict.",
-      "authority": "Projection explicative dérivée.",
+      "title": "Reporting and guidance",
+      "summary": "Explain results without changing the verdict.",
+      "authority": "Derived explanatory projection.",
       "owns": [
-        "rendu",
+        "rendering",
         "guidance"
       ],
       "doesNotOwn": [
-        "décision canonique"
+        "canonical decision"
       ],
       "workflow": [
-        "Lire",
-        "Expliquer",
-        "Orienter"
+        "Read",
+        "Explain",
+        "Guide"
       ],
       "sources": [
         "render.ts",

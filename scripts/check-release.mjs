@@ -15,13 +15,20 @@ export function assertPublishingTools(nodeVersion, npmVersion) {
 }
 export function assertReleaseInputs(policy, manifest, lock, env) {
   assert.equal(env.GITHUB_REPOSITORY, policy.repository);
-  assert.equal(env.GITHUB_EVENT_NAME, 'push');
+  assert.ok(env.GITHUB_EVENT_NAME === 'push' || env.GITHUB_EVENT_NAME === 'workflow_dispatch');
   assert.match(manifest.version, /^0\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/);
-  assert.equal(env.GITHUB_REF, `refs/tags/v${manifest.version}`);
+  const expectedTag = `v${manifest.version}`;
+  if (env.GITHUB_EVENT_NAME === 'push') {
+    assert.equal(env.GITHUB_REF, `refs/tags/${expectedTag}`);
+  } else {
+    assert.equal(env.GITHUB_REF, 'refs/heads/main');
+    assert.equal(env.COMPLIANCE_RELEASE_TAG, expectedTag);
+  }
   assert.equal(manifest.name, policy.packageName);
   assert.equal(manifest.private, false);
   assert.equal(manifest.license, 'PolyForm-Noncommercial-1.0.0');
   assert.equal(manifest.publishConfig?.access, 'public');
+  assert.equal(manifest.publishConfig?.registry, 'https://registry.npmjs.org/');
   assert.equal(manifest.repository?.url, `git+https://github.com/${policy.repository}.git`);
   assert.equal(lock.name, manifest.name);
   assert.equal(lock.version, manifest.version);
@@ -29,7 +36,10 @@ export function assertReleaseInputs(policy, manifest, lock, env) {
   assert.equal(lock.packages[''].version, manifest.version);
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const authorityRoot = fileURLToPath(new URL('..', import.meta.url));
+  const releaseRoot = resolve(authorityRoot, process.env.COMPLIANCE_RELEASE_ROOT ?? '.');
   const read = file => JSON.parse(readFileSync(new URL('../' + file, import.meta.url), 'utf8'));
-  assertReleaseInputs(read('release-policy.json'), read('package.json'), read('package-lock.json'), process.env);
+  const readRelease = file => JSON.parse(readFileSync(resolve(releaseRoot, file), 'utf8'));
+  assertReleaseInputs(read('release-policy.json'), readRelease('package.json'), readRelease('package-lock.json'), process.env);
   assertPublishingTools(process.versions.node, execFileSync('npm', ['--version'], { encoding: 'utf8' }).trim());
 }

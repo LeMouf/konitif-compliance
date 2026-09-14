@@ -2,6 +2,12 @@ name: Publish @konitif/compliance
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Exact protected release tag to publish
+        required: true
+        default: v0.284.2
 permissions:
   contents: read
 concurrency:
@@ -16,19 +22,42 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    env:
+      COMPLIANCE_RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Checkout release authority
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
+          persist-credentials: false
+      - name: Checkout exact release tag
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+          path: .release-source
           fetch-depth: 0
           persist-credentials: false
-      - name: Require tag on main history
-        run: git merge-base --is-ancestor HEAD origin/main
+      - name: Require exact tag on main history
+        run: |
+          expected="v$(node -p "require('./.release-source/package.json').version")"
+          test "${COMPLIANCE_RELEASE_TAG}" = "${expected}"
+          if test "${GITHUB_EVENT_NAME}" = "push"; then
+            test "${GITHUB_REF}" = "refs/tags/${expected}"
+          else
+            test "${GITHUB_REF}" = "refs/heads/main"
+          fi
+          test "$(git -C .release-source tag --points-at HEAD --list "${expected}")" = "${expected}"
+          git -C .release-source fetch --no-tags origin main:refs/remotes/origin/main
+          git -C .release-source merge-base --is-ancestor HEAD origin/main
       - run: bash scripts/select-ci-runtime.sh
-      - run: npm ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org
-      - run: npm run build
-      - run: npm test
+      - run: npm --prefix .release-source ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org
+      - run: npm --prefix .release-source run build
+      - run: npm --prefix .release-source test
       - run: node scripts/check-release.mjs
+        env:
+          COMPLIANCE_RELEASE_ROOT: .release-source
       - name: Verify exact archive to publish
         run: node scripts/prepare-release-archive.mjs
+        env:
+          COMPLIANCE_RELEASE_ROOT: .release-source
       - name: Publish verified archive through npm OIDC
         run: npm publish .release/package.tgz --access public --provenance --ignore-scripts --registry=https://registry.npmjs.org

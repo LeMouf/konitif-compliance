@@ -1,7 +1,9 @@
 # Release preparation
 
-Publication is disabled by default. The workflow is restricted to this repository
-and version tags on main history, and requires COMPLIANCE_NPM_PUBLISH_ENABLED=true.
+Publication is disabled by default. The workflow is restricted to this repository,
+an exact version tag on main history, and requires
+COMPLIANCE_NPM_PUBLISH_ENABLED=true. A manual dispatch must run from `main` and
+name that exact tag.
 Do not enable that repository variable until the following controls are reviewed:
 
 - Protect main with the required validate check and pull requests.
@@ -12,14 +14,15 @@ Do not enable that repository variable until the following controls are reviewed
   workflow publish.yml, environment npm-release, allowing npm publish.
 
 The first npm package creation may require a separate approved bootstrap step.
-No bootstrap, tag or npm publication is authorized by this document. Keep the
-local prepublishOnly guard until that step is explicitly prepared and reviewed.
+No bootstrap, tag or npm publication is authorized by this document. Direct
+source publication remains guarded: publish only the verified archive with
+scripts disabled.
 
 The release job builds and tests, validates package/tag identity, verifies an
 archive through an external TypeScript/ESM consumer, and publishes those exact
 bytes using OIDC. It never upgrades tools automatically. The environment must
 actually be configured on GitHub: naming it in YAML does not enforce reviewers.
 
-Current preparation retains version 0.284.1 and the existing licence. It neither
+Current preparation targets version 0.284.2 and retains the existing licence. It neither
 changes commercial rights nor creates an official ecosystem release. The original
 BASELINE describes the initial commit, not subsequent release activation.

@@ -19,7 +19,7 @@ test('distribution locks only the approved development toolchain', () => {
   }
 });
 
-test('build and CI are standalone and publication remains disabled', () => {
+test('build and CI are standalone and direct publication remains guarded', () => {
   const config=JSON.parse(read('tsconfig.json'));
   assert.equal(config.extends,undefined);
   assert.equal(config.compilerOptions.paths,undefined);
@@ -27,7 +27,7 @@ test('build and CI are standalone and publication remains disabled', () => {
   assert.match(workflow,/contents: read/);
   assert.match(workflow,/npm ci --ignore-scripts/);
   assert.doesNotMatch(workflow,/id-token|npm publish|secrets\./);
-  assert.match(JSON.parse(read('package.json')).scripts.prepublishOnly,/throw new Error/);
+  assert.match(JSON.parse(read('package.json')).scripts.prepublishOnly,/verified \.release\/package\.tgz/);
   assert.match(read('scripts/select-ci-runtime.sh'),/24\.20\.0/);
   assert.doesNotMatch(read('scripts/select-ci-runtime.sh'),/curl|wget|npx/);
 });
