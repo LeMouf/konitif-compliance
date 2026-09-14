@@ -14,16 +14,14 @@ Do not enable that repository variable until the following controls are reviewed
 - Configure npm trusted publishing for LeMouf/konitif-compliance,
   workflow publish.yml, environment npm-release, allowing npm publish.
 
-The first npm package creation may require a separate approved bootstrap step.
-No bootstrap, tag or npm publication is authorized by this document. Direct
-source publication remains guarded: publish only the verified archive with
-scripts disabled.
+The package already exists on npm. All subsequent releases use the guarded OIDC
+workflow; direct local publication is no longer part of the release path.
 
 The release job builds and tests, validates package/tag identity, verifies an
 archive through an external TypeScript/ESM consumer, and publishes those exact
 bytes using OIDC. It never upgrades tools automatically. The environment must
 actually be configured on GitHub: naming it in YAML does not enforce reviewers.
 
-Current preparation targets version 0.284.2 and retains the existing licence. It neither
+Current preparation targets version 0.284.3 and retains the existing licence. It neither
 changes commercial rights nor creates an official ecosystem release. The original
 BASELINE describes the initial commit, not subsequent release activation.
