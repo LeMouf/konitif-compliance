@@ -1,74 +1,67 @@
 # @konitif/compliance
 
-`@konitif/compliance` is the generic evidence and compliance engine for KONITIF-based systems.
+Deterministic evidence, policy evaluation and report contracts for assessing an
+identified subject without conflating collected facts with a verdict.
 
-It models evidence, aggregates dimensions, evaluates blockers, creates guidance, renders reports, compares snapshots and validates the trust of repository meta-tooling. It does not define a product's collectors or promotion policy.
-
-## Owns
-
-- generic compliance report and evidence contracts;
-- deterministic aggregation and status semantics;
-- snapshot manifests and comparisons;
-- report rendering and guidance generation;
-- repository-purity evidence models;
-- meta-tooling trust and validation models.
-
-## Must Not Own
-
-- any product identity;
-- product-specific collectors or profiles;
-- product-specific release policy;
-- UI, runtime state or build execution;
-- assumptions about a particular repository layout.
-
-## Product Composition
-
-```text
-@konitif/compliance
-down
-product compliance policy
-down
-product release and QA workflows
-```
-
-Products provide their own `ruleSetVersion`, collectors and promotion policy when creating a report.
-
-## Development
-
-With Node.js and npm already installed:
+## Installation
 
 ```sh
-npm ci --ignore-scripts --no-audit --no-fund
-npm run build
-npm test
-npm run verify:package
+npm install @konitif/compliance
 ```
 
-The package has no runtime dependencies. The locked development toolchain builds
-ESM JavaScript and TypeScript declarations. Archive validation uses the installed
-compiler and `tar`, without installing an external consumer's dependencies.
-Publication is not enabled in this preparation.
+## What it provides
 
-## Usage
+- Evidence and compliance-report contracts.
+- Deterministic dimension aggregation and blocker evaluation.
+- Snapshot manifests and comparisons.
+- Guidance and report rendering derived from explicit findings.
+- Repository-purity and validation models for build or release tooling.
+
+## Authority boundary
+
+This package owns generic assessment contracts and deterministic evaluation
+rules. Callers own their collectors, policy profiles, promotion decisions and
+the identity of the assessed subject. Guidance explains a verdict; it cannot
+rewrite the evidence or turn missing evidence into success.
+
+## Quick start
 
 ```ts
-import {
-  createComplianceEvidence,
-  createComplianceReport
-} from '@konitif/compliance';
+import { createComplianceReport } from '@konitif/compliance';
 
 const report = createComplianceReport({
-  reportId: 'product:1.0.0:local',
-  ruleSetVersion: 'product-compliance.v1',
+  reportId: 'subject:1.0.0:local',
+  ruleSetVersion: 'baseline.v1',
   product: {
-    productId: 'product',
-    productName: 'Product',
-    version: '1.0.0'
+    productId: 'subject',
+    productName: 'Example subject',
+    version: '1.0.0',
   },
   environment: {
     sourceCommit: 'local',
-    cleanTree: false
+    cleanTree: false,
   },
-  collectorResults: []
+  collectorResults: [],
 });
 ```
+
+The `product` property is retained for API compatibility and identifies the
+subject under assessment; it does not make this package a domain policy
+authority.
+
+## Public entry points
+
+| Entry | Purpose |
+| --- | --- |
+| `@konitif/compliance` | Evidence, policy, report, snapshot and guidance contracts. |
+
+## Reference
+
+See [`reference/`](reference/) for the machine-readable capability catalog and
+authority diagram. These artifacts describe the package; they are not an
+assessment policy or executable configuration.
+
+## License
+
+Source-available under [PolyForm Noncommercial 1.0.0](LICENSE.md), not OSI open
+source. Commercial use requires separate written authorization.

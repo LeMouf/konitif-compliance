@@ -24,7 +24,7 @@ mkdirSync(pkg,{recursive:true});
 run('tar',['-xzf',join(temp,packed.filename),'-C',pkg,'--strip-components=1']);
 const manifest = JSON.parse(readFileSync(join(pkg,'package.json'),'utf8'));
 assert.equal(manifest.name,'@konitif/compliance');
-assert.equal(manifest.version,'0.284.1');
+assert.equal(manifest.version,'0.284.2');
 assert.deepEqual(manifest.dependencies ?? {},{});
 for(const path of paths.filter(p=>p.endsWith('.map'))) {
   const mapPath=join(pkg,path), map=JSON.parse(readFileSync(mapPath,'utf8'));

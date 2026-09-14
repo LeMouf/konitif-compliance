@@ -1,8 +1,17 @@
 {
   "name": "@konitif/compliance",
   "license": "PolyForm-Noncommercial-1.0.0",
-  "version": "0.284.1",
+  "version": "0.284.2",
   "private": false,
+  "description": "Deterministic evidence, policy evaluation, compliance reports and snapshot comparison.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeMouf/konitif-compliance.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -32,6 +41,6 @@
     "test": "node --test tests/*.test.mjs",
     "verify:package": "node scripts/verify-package.mjs",
     "prepack": "npm run build && npm test",
-    "prepublishOnly": "node -e \"throw new Error('Publication is not enabled for this preparation')\""
+    "prepublishOnly": "node -e \"throw new Error('Publish only the verified .release/package.tgz archive with scripts disabled')\""
   }
 }

@@ -62,6 +62,7 @@ export interface ComplianceProductIdentity {
 
 export interface ComplianceSourceIdentity {
   id: string;
+  version?: string;
   owner: string;
   format: string;
   path?: string;

@@ -1,6 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createComplianceReport, createComplianceEvidence, runComplianceCollectors} from '../dist/index.js';
+import {
+  compareComplianceReports,
+  createComplianceEvidence,
+  createComplianceReport,
+  createComplianceSnapshotManifest,
+  renderComplianceHtml,
+  renderComplianceMarkdown,
+  runComplianceCollectors
+} from '../dist/index.js';
 
 const context = {product:{productId:'test',productName:'Test',version:'0.0.0'},environment:{sourceCommit:'test',cleanTree:true}};
 const source = {id:'test',owner:'test',format:'collector',scope:'tests',freshness:'current',deterministic:true,cost:'low',trust:'high',reusable:true};
@@ -21,4 +29,38 @@ test('a timed-out collector remains unmeasured', async () => {
 });
 test('collector failures are observable, not converted to successful evidence', async () => {
   await assert.rejects(runComplianceCollectors([{id:'fail',dimension:'tests',collect:async()=>{throw Error('test failure');}}],context),/test failure/);
+});
+test('snapshot provenance preserves collector versions without borrowing the policy version', () => {
+  const result = report([{source:{...source,version:'collector.v2'},evidence:[]}]);
+  const snapshot = createComplianceSnapshotManifest({
+    report: result,
+    platform: 'test',
+    profiles: [],
+    commands: [],
+    rawEvidencePaths: []
+  });
+  assert.deepEqual(snapshot.collectorVersions,{test:'collector.v2'});
+  const unknown = createComplianceSnapshotManifest({
+    report: report([{source,evidence:[]}]),
+    platform: 'test',
+    profiles: [],
+    commands: [],
+    rawEvidencePaths: []
+  });
+  assert.deepEqual(unknown.collectorVersions,{test:'unknown'});
+});
+test('report comparison requires the same subject and rule set', () => {
+  const before = report([]);
+  assert.equal(compareComplianceReports(before,{...before,reportId:'after'}).compatible,true);
+  assert.equal(compareComplianceReports(before,{...before,ruleSetVersion:'other.v1'}).compatible,false);
+  assert.equal(compareComplianceReports(before,{
+    ...before,
+    product:{...before.product,productId:'other'}
+  }).compatible,false);
+});
+test('rendering names a compliance report without claiming a compliant verdict', () => {
+  const result = report([]);
+  assert.match(renderComplianceMarkdown(result),/^# KONITIF Compliance Report/);
+  assert.match(renderComplianceHtml(result),/<h1>KONITIF Compliance Report<\/h1>/);
+  assert.doesNotMatch(renderComplianceMarkdown(result),/Compliant Report/);
 });

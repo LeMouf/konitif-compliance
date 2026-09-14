@@ -10,7 +10,7 @@ export function renderComplianceMarkdown(report: ComplianceReport): string {
       .map((item) => `| ${item.priority} | ${item.status} | ${item.owner} | ${item.action} |`)
       .join('\n');
 
-  return `# KONITIF Compliant Report
+  return `# KONITIF Compliance Report
 
 Status: ${report.globalStatus}
 
@@ -41,14 +41,14 @@ export function renderComplianceHtml(report: ComplianceReport): string {
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>KONITIF Compliant Report</title>
+  <title>KONITIF Compliance Report</title>
   <style>
     body { font-family: system-ui, sans-serif; margin: 2rem; color: #dbeafe; background: #020617; }
     code, strong { color: #e0f2fe; }
   </style>
 </head>
 <body>
-  <h1>KONITIF Compliant Report</h1>
+  <h1>KONITIF Compliance Report</h1>
   <p><strong>Status:</strong> ${escapeHtml(report.globalStatus)}</p>
   <p><strong>Product:</strong> ${escapeHtml(report.product.productName)} ${escapeHtml(report.product.version)}</p>
   <ul>${dimensions}</ul>
