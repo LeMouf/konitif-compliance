@@ -15,15 +15,10 @@ export function assertPublishingTools(nodeVersion, npmVersion) {
 }
 export function assertReleaseInputs(policy, manifest, lock, env) {
   assert.equal(env.GITHUB_REPOSITORY, policy.repository);
-  assert.ok(env.GITHUB_EVENT_NAME === 'push' || env.GITHUB_EVENT_NAME === 'workflow_dispatch');
+  assert.equal(env.GITHUB_EVENT_NAME, 'push');
   assert.match(manifest.version, /^0\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/);
   const expectedTag = `v${manifest.version}`;
-  if (env.GITHUB_EVENT_NAME === 'push') {
-    assert.equal(env.GITHUB_REF, `refs/tags/${expectedTag}`);
-  } else {
-    assert.equal(env.GITHUB_REF, 'refs/heads/main');
-    assert.equal(env.COMPLIANCE_RELEASE_TAG, expectedTag);
-  }
+  assert.equal(env.GITHUB_REF, `refs/tags/${expectedTag}`);
   assert.equal(manifest.name, policy.packageName);
   assert.equal(manifest.private, false);
   assert.equal(manifest.license, 'PolyForm-Noncommercial-1.0.0');
