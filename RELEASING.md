@@ -2,15 +2,14 @@
 
 Publication is disabled by default. The workflow is restricted to this repository,
 an exact version tag on main history, and requires
-COMPLIANCE_NPM_PUBLISH_ENABLED=true. A manual dispatch must run from `main` and
-name that exact tag.
+COMPLIANCE_NPM_PUBLISH_ENABLED=true. Tag creation is the only release trigger;
+the workflow has no manual publication path.
 Do not enable that repository variable until the following controls are reviewed:
 
 - Protect main with the required validate check and pull requests.
 - Apply separate v* tag rules for immutable updates/deletions and admin creation.
 - Create npm-release with LeMouf as required reviewer, self-review allowed,
-  administrator bypass disabled, the `main` branch allowed for guarded manual
-  dispatches, and `v*` tags allowed for tag-triggered releases.
+  administrator bypass disabled, and only `v*` tags allowed to deploy.
 - Configure npm trusted publishing for LeMouf/konitif-compliance,
   workflow publish.yml, environment npm-release, allowing npm publish.
 
