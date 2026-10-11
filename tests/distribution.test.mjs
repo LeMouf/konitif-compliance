@@ -28,6 +28,6 @@ test('build and CI are standalone and direct publication remains guarded', () =>
   assert.match(workflow,/npm ci --ignore-scripts/);
   assert.doesNotMatch(workflow,/id-token|npm publish|secrets\./);
   assert.match(JSON.parse(read('package.json')).scripts.prepublishOnly,/verified \.release\/package\.tgz/);
-  assert.match(read('scripts/select-ci-runtime.sh'),/24\.20\.0/);
+  assert.match(read('scripts/select-ci-runtime.sh'),/node\/24\.\*\/x64\/bin/);
   assert.doesNotMatch(read('scripts/select-ci-runtime.sh'),/curl|wget|npx/);
 });
